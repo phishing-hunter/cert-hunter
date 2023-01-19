@@ -1,0 +1,52 @@
+name: Docker
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches: [ "main" ]
+
+env:
+  DOCKER_USERNAME: phishinghunter
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: download csv files
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        run: |
+          echo -n ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > sa.json
+          python download_csv.py
+
+      - name: Build the Docker image
+        run: |
+          docker build -t ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:latest .
+  
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+  
+      - name: Push the Docker image
+        run: |
+          docker push ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:latest
