@@ -110,6 +110,6 @@ def count_high_score_domains(file_path):
     return count
 
 yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-file_path = f"{yesterday}.csv"
+file_path = f"/csv/{yesterday}.csv"
 count = count_high_score_domains(file_path)
 print("The number of domains with score over 150 is:", count)
