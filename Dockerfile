@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y automake libtool make gcc flex bison &&
     cd yara-python && python3 setup.py build --dynamic-linking && python3 setup.py install && ldconfig && \
     mkdir /rules  && echo 'import "zip" rule dummy { condition: zip.has_string("index.php", "antibot") > 0 }' > /rules/test_rule && \
     rm -rf /tmp/*
-
+COPY tests/test.zip /test.zip
+RUN yara /rules/test_rule /test.zip
 RUN mkdir /csv
 COPY *.csv /csv/
-COPY tests/test.zip /test.zip
 COPY src /app
 WORKDIR /app
