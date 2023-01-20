@@ -38,7 +38,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: |
           echo -n ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > sa.json
-          python download_csv.py
+          python src/download_csv.py
 
       - name: Build the Docker image
         run: |

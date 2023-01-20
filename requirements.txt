@@ -1,2 +1,6 @@
 google-api-python-client
 oauth2client
+tld==0.7.9
+python_Levenshtein==0.12.0
+pyyaml
+tldextract
