@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y automake libtool make gcc flex bison &&
     rm -rf /tmp/*
 COPY tests/test.zip /test.zip
 RUN yara /rules/test_rule /test.zip
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 RUN mkdir /csv
 COPY *.csv /csv/
 COPY src /app

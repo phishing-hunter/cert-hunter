@@ -10,6 +10,7 @@ import pandas as pd
 from tld import get_tld
 from Levenshtein import distance
 from confusables import unconfuse
+from datetime import datetime, timedelta
 
 suspicious_yaml = sys.argv[1]
 
@@ -108,6 +109,7 @@ def count_high_score_domains(file_path):
     count = df[df['score'] >= 150].shape[0]
     return count
 
-file_path = sys.argv[2]
+yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+file_path = f"{yesterday}.csv"
 count = count_high_score_domains(file_path)
 print("The number of domains with score over 150 is:", count)
