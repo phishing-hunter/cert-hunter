@@ -1,6 +1,4 @@
 # Config Checker
-をテストするためのイメージ
-
 This is the Docker image repository for validating [this repository](https://github.com/phishing-hunter/PHOps).  
 The algorithm of the engine that performs domain scoring running on [phishing-hunter](https://www.phishing-hunter.com) is available.  
 If you need real-time notification of scoring results, please register an account [here](https://www.phishing-hunter.com/login).  
