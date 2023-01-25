@@ -103,13 +103,15 @@ def score_domain(domain):
 
     return score
 
-def count_high_score_domains(file_path):
+def count_high_score_domains(file_path, target_score):
     df = pd.read_csv(file_path, header=None, names=['domain', 'score', 'fingerprint', 'issuer'])
     df['score'] = df['domain'].apply(score_domain)
-    count = df[df['score'] >= 150].shape[0]
+    count = df[df['score'] >= target_score].shape[0]
     return count
 
-file_path = "/csv/target.csv"
-count = count_high_score_domains(file_path)
+file_path = sys.argv[2]
+limit = int(sys.argv[3])
+target_score = int(sys.argv[4])
+count = count_high_score_domains(file_path, target_score)
 print("The number of domains with score over 150 is:", count)
-assert count < 500
+assert count < limit
