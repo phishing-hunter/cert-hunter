@@ -44,6 +44,7 @@ jobs:
         run: |
           export TAG=`date -d "yesterday" +%Y%m%d`
           docker build --build-arg DATE=`date -d "yesterday" +%Y-%m-%d` -t ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:${TAG} .
+          docker tag ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:${TAG} ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:latest
   
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
@@ -52,3 +53,4 @@ jobs:
         run: |
           export TAG=`date -d "yesterday" +%Y%m%d`
           docker push ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:${TAG}
+          docker push ${DOCKER_USERNAME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}:latest
