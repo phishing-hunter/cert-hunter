@@ -23,6 +23,6 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN mkdir /csv
 ARG DATE
-COPY ${DATE}.csv /csv/
+COPY ${DATE}.csv /csv/target.csv
 COPY src /app
 WORKDIR /app
