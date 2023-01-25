@@ -43,7 +43,6 @@ def download_csv(file_name):
         with open(file_name, 'wb') as f:
             shutil.copyfileobj(fh, f, length=131072)
 
-for i in range(1, 3):
-    ts = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d")
-    file_name = f"{ts}.csv"
-    download_csv(file_name)
+ts = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+file_name = f"{ts}.csv"
+download_csv(file_name)

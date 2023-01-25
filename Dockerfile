@@ -22,6 +22,7 @@ RUN yara /rules/test_rule /test.zip
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN mkdir /csv
-COPY *.csv /csv/
+ARG DATE
+COPY ${DATE}.csv /csv/
 COPY src /app
 WORKDIR /app
