@@ -5,7 +5,7 @@ If you need real-time notification of scoring results, please register an accoun
 
 ## Run checker
 ```bash
-$ docker run --rm -it -v $PWD:/work -w /work phishinghunter/config-checker:20220922 /app/checker.py suspicious.yaml /csv/target.csv 500 150
+$ docker run --rm -it -v $PWD:/work -w /work phishinghunter/config-checker:20220922 /app/checker.py suspicious.yaml
 ```
 
 ## Reference

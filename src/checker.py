@@ -6,6 +6,7 @@ import math
 import yaml
 import json
 import time
+import click
 import pandas as pd
 from tld import get_tld
 from Levenshtein import distance
@@ -103,15 +104,30 @@ def score_domain(domain):
 
     return score
 
-def count_high_score_domains(file_path, target_score):
+def count_high_score_domains(file_path, target_score, verbose):
+    if file_path == '-':
+        with open("/tmp/target.csv", "w") as f:
+            f.write(sys.stdin.read())
+        file_path = "/tmp/target.csv"
     df = pd.read_csv(file_path, header=None, names=['domain', 'score', 'fingerprint', 'issuer'])
     df['score'] = df['domain'].apply(score_domain)
-    count = df[df['score'] >= target_score].shape[0]
+    result = df[df['score'] >= target_score]
+    count = result.shape[0]
+    if verbose:
+        pd.set_option('display.max_rows', None)
+        print(result.to_string(index=False))
     return count
 
-file_path = sys.argv[2]
-limit = int(sys.argv[3])
-target_score = int(sys.argv[4])
-count = count_high_score_domains(file_path, target_score)
-print("The number of domains with score over 150 is:", count)
-assert count < limit
+@click.command()
+@click.argument('suspicious_yaml')
+@click.option('-f', 'csv_file', default='/csv/target.csv', help='csv file')
+@click.option('-m', 'max_detection', default=500, help='max detection')
+@click.option('-s', 'score', default=150, help='target score')
+@click.option('-v', 'verbose', is_flag=True, default=False, help='Verbose output')
+def main(suspicious_yaml, csv_file, max_detection, score, verbose):
+    count = count_high_score_domains(csv_file, score, verbose)
+    print("The number of domains with score over 150 is:", count)
+    assert count < max_detection
+
+if __name__ == '__main__':
+    main()
