@@ -1,5 +1,7 @@
 sa.json
-build.sh
 README.md
 suspicious.yaml
 __pycache__
+.git
+Dockerfile
+build.sh
